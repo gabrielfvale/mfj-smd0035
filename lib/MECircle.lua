@@ -99,15 +99,17 @@ function C:welzl( pts )
   return self:welzlRecursion( P, {}, #P )
 end
 
-function C:render( ... )
-  params = {...}
-  color = { 0.5, 0.5, 0.5 }
-  if #params == 3 then color = params end
+function C:draw( color, showText, fillMode )
+  color = color or { 0.5, 0.5, 0.5 }
+  fillMode = fillMode or "line"
+  if showText == nil then showText = true end
 
   love.graphics.push("all")
     love.graphics.setColor(color)
-    love.graphics.circle("line", self.c.x, self.c.y, self.r)
-    love.graphics.print("Welzl's MEC", self.c.x - 35, self.c.y - self.r - 15)
+    love.graphics.circle(fillMode, self.c.x, self.c.y, self.r)
+    if showText then
+      love.graphics.print("Welzl's MEC", self.c.x - 35, self.c.y - self.r - 15)
+    end
   love.graphics.pop()
 
 end

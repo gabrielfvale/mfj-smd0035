@@ -14,7 +14,7 @@ function P.dist(p0, p1)
   return math.sqrt( (p0.x - p1.x) ^ 2 + (p0.y - p1.y) ^ 2 )
 end
 
-function P:render(color)
+function P:draw(color)
   color = color or {1, 1, 1}
 
   love.graphics.push("all")

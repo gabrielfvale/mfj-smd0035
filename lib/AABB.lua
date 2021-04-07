@@ -22,7 +22,7 @@ function A:new( pts )
     self.min = Point(minX, minY)
     self.max = Point(maxX, maxY)
     
-    self.corners = {
+    self.vertices = {
       minX, minY,
       maxX, minY,
       maxX, maxY,
@@ -37,18 +37,20 @@ function A:setEmpty()
   self.center = Point()
 end
 
-function A:render( ... )
-  params = {...}
-  color = { 0.5, 0.5, 0.5 }
-  if #params == 3 then color = params end
+function A:draw( color, showText, fillMode )
+  color = color or { 0.5, 0.5, 0.5 }
+  fillMode = fillMode or "line"
+  if showText == nil then showText = true end
   -- self.min:render( {1, 0, 0} )
   -- self.max:render( {0, 1, 0} )
 
-  if #self.corners ~= 0 then
+  if #self.vertices ~= 0 then
     love.graphics.push("all")
     love.graphics.setColor(color[1], color[2], color[3])
-    love.graphics.polygon( "line", self.corners )
-    love.graphics.print("AABB", self.min.x, self.min.y)
+    love.graphics.polygon( fillMode, self.vertices )
+    if showText then
+      love.graphics.print("AABB", self.min.x, self.min.y)
+    end
     love.graphics.pop()
   end
 end

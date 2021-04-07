@@ -6,7 +6,7 @@ function Vec2:new(x, y)
   self.y = y or 0
 end
 
-function Vec2:render(origin, color, mul)
+function Vec2:draw(origin, color, mul)
 
   color = color or {0.5, 0.5, 0.5}
   mul = mul or 1

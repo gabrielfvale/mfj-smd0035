@@ -58,13 +58,13 @@ function EV:draw( ... )
 
   -- render point cloud
   for _, p in ipairs(point_cloud) do
-    p:render()
+    p:draw()
   end
 
   -- render Bounding Volumes
-  obb:render( 0, 0.5, 0.5 )
-  aabb:render( 0.5, 0, 0.5 )
-  circle:render( 0.5, 0.5, 0 )
+  obb:draw( {0, 0.5, 0.5} )
+  aabb:draw( {0.5, 0, 0.5} )
+  circle:draw( {0.5, 0.5, 0} )
 end
 
 return EV

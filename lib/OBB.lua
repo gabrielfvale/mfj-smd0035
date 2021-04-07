@@ -54,7 +54,7 @@ function O:new( u, pts )
   local p3 = Point.add(op3[1], op3[2])
   p3 = Point.add(p3, self.c)
 
-  self.corners = {
+  self.vertices = {
     p0.x, p0.y,
     p1.x, p1.y,
     p2.x, p2.y,
@@ -66,23 +66,25 @@ function O:new( u, pts )
   self.angle = math.acos( adot / (x_axis:mag() * self.u:mag()) )
 end
 
-function O:render( ... )
-  params = {...}
-  color = { 0.5, 0.5, 0.5 }
-  if #params == 3 then color = params end
+function O:draw( color, showText, fillMode )
+  color = color or { 0.5, 0.5, 0.5 }
+  fillMode = fillMode or "line"
+  if showText == nil then showText = true end
 
   -- self.u:render(self.c, {0.5, 0, 0}, 100)
   -- self.v:render(self.c, {0, 0.5, 0}, 100)
 
-  if #self.corners ~= 0 then
+  if #self.vertices ~= 0 then
     love.graphics.push("all")
     love.graphics.setColor(color[1], color[2], color[3])
-    love.graphics.polygon( "line", self.corners )
-    -- rotate label
-    love.graphics.translate(self.corners[1], self.corners[2])
-    love.graphics.rotate(self.angle)
-    love.graphics.print("OBB")
-    love.graphics.pop()
+    love.graphics.polygon( "line", self.vertices )
+    if showText then
+      -- rotate label
+      love.graphics.translate(self.vertices[1], self.vertices[2])
+      love.graphics.rotate(self.angle)
+      love.graphics.print("OBB")
+      love.graphics.pop()
+    end
   end
 end
 
