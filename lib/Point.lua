@@ -14,6 +14,17 @@ function P.dist(p0, p1)
   return math.sqrt( (p0.x - p1.x) ^ 2 + (p0.y - p1.y) ^ 2 )
 end
 
+function P:matrix( matrix )
+  if #matrix ~= 9 then
+    return
+  end
+  local m = matrix
+  local x = self.x
+  local y = self.y
+  self.x = m[1] * x + m[2] * y + m[3] * 1;
+  self.y = m[4] * x + m[5] * y + m[6] * 1;
+end
+
 function P:draw(color)
   color = color or {1, 1, 1}
 

@@ -57,12 +57,12 @@ function SM:update( dt )
 end
 
 function SM:draw( ... )
+  local _, screen_height = love.graphics.getDimensions()
   love.graphics.push("all")
   love.graphics.setColor(0, 0.5, 0)
-  love.graphics.print("[TAB para alternar] Cena: " .. self.currentSceneName)
+  love.graphics.print("[TAB para alternar] Cena: " .. self.currentSceneName, 0, screen_height - 20)
   love.graphics.pop()
   if self.currentScene then
-    love.graphics.translate(0, 20)
     self.currentScene:draw( ... )
   end
 end

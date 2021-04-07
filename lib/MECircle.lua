@@ -1,5 +1,5 @@
-local Class = require("lib.Class")
-local C = Class:derive("MECircle")
+local Primitive = require("lib.Primitive")
+local C = Primitive:derive("MECircle")
 
 local Point = require("lib.Point")
 
@@ -18,6 +18,25 @@ function C:isInside( p0 )
   local c = self.c
   local dist = Point.dist( c, p0 )
   return dist <= self.r
+end
+
+function C:translate( x, y )
+  local translateMatrix = {
+    1, 0, x,
+    0, 1, y,
+    0, 0, 1
+  }
+  self.c:matrix( translateMatrix )
+end
+
+function C:collidesWith( B )
+  if B:is(C) then -- circle x circle
+    local radius = B.r
+    local center = B.c
+    dist = Point.dist(self.c, center)
+    return dist - (self.r + radius) < 0
+  end
+  return false
 end
 
 function C:getCenter( b, c )
