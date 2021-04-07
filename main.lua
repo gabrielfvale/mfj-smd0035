@@ -1,7 +1,7 @@
 local SceneManager = require("lib.SceneManager")
 
 -- global keypressed for multiple callbacks
-local KEYPRESSED={}
+KEYPRESSED={}
 
 function love.keypressed(key, unicode)
   for _,fn in ipairs(KEYPRESSED) do
@@ -17,10 +17,13 @@ keypressed(function (key, unicode)
   if key == "escape" then
     love.event.quit()
   end
+  if key == "tab" then
+    SM:cycle()
+  end
 end)
 
 function love.load()
-  SM = SceneManager("scenes", { "EnclosingVolumes" })
+  SM = SceneManager("scenes", { "EnclosingVolumes", "CollisionVolumes" })
 end
 
 function love.update(dt)

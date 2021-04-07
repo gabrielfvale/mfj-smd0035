@@ -4,6 +4,7 @@ local SM = Class:derive("SceneManager")
 function SM:new( dir, scenes )
   dir = dir or ""
   self.scenes = {}
+  self.sceneNames = scenes
   self.dir = dir
   self.currentSceneName = "None"
 
@@ -56,11 +57,32 @@ function SM:update( dt )
 end
 
 function SM:draw( ... )
-  love.graphics.print("[SCENE] " .. self.currentSceneName)
+  love.graphics.push("all")
+  love.graphics.setColor(0, 0.5, 0)
+  love.graphics.print("[TAB para alternar] Cena: " .. self.currentSceneName)
+  love.graphics.pop()
   if self.currentScene then
     love.graphics.translate(0, 20)
     self.currentScene:draw( ... )
   end
+end
+
+function SM:cycle()
+  local index = 1
+  local nextIndex = 1
+
+  for k, v in ipairs(self.sceneNames) do
+    if v == self.currentSceneName then
+      index = k
+      nextIndex = index + 1
+      if nextIndex > #self.sceneNames then
+        nextIndex = 1
+      end
+    end
+  end
+
+  self:switch(self.sceneNames[nextIndex])
+
 end
 
 return SM
