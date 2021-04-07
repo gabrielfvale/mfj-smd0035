@@ -5,6 +5,8 @@ local AABB = require("lib.AABB")
 local OBB = require("lib.OBB")
 local MECircle = require("lib.MECircle")
 
+local SceneManager = require("lib.SceneManager")
+
 function createRandomPoints(x, y)
   local max_points = love.math.random(5, 40)
   local screen_width, screen_height = love.graphics.getDimensions()
@@ -28,6 +30,9 @@ function makeBoundingVolumes()
 end
 
 function love.load()
+  SM = SceneManager("scenes", { "EnclosingVolumes" })
+  -- SM:switch("EnclosingVolumes")
+
   local screen_width, screen_height = love.graphics.getDimensions()
   pageOrigin = Point(screen_width / 2, screen_height / 2)
   point_cloud = {}
@@ -46,10 +51,11 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-
+  SM:update(dt)
 end
 
 function love.draw()
+  SM:draw()
   -- text
   love.graphics.print("'Espaço' para gerar novos pontos")
   love.graphics.print("A orientação da OBB é gerada aleatoriamente", 0, 20)

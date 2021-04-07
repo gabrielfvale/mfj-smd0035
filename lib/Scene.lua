@@ -1,7 +1,8 @@
 local Class = require("lib.Class")
 local S = Class:derive("Scene")
 
-function S:new( ... )
+function S:new( sceneMgr )
+  self.sceneMgr = sceneMgr
 end
 
 function S:enter()
