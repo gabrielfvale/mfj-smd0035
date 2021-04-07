@@ -1,7 +1,7 @@
-local class = require("class")
-local A = class:derive("AABB")
+local Class = require("lib.Class")
+local A = Class:derive("AABB")
 
-local Point = require("Point")
+local Point = require("lib.Point")
 
 function A:new( pts )
   pts = pts or {}

@@ -1,7 +1,7 @@
-local class = require("class")
-local Point = require("Point")
-local Vector2 = require("Vector2")
-local O = class:derive("OBB")
+local Class = require("lib.Class")
+local Point = require("lib.Point")
+local Vector2 = require("lib.Vector2")
+local O = Class:derive("lib.OBB")
 
 function project( pts, v )
   min, max = math.huge, -math.huge

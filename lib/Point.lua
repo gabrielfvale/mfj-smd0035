@@ -1,5 +1,5 @@
-local class = require("class")
-local P = class:derive("Point")
+local Class = require("lib.Class")
+local P = Class:derive("Point")
 
 function P:new(x, y)
   self.x = x or 0

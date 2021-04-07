@@ -1,5 +1,5 @@
-local class = require("class")
-local S = class:derive("Scene")
+local Class = require("lib.Class")
+local S = Class:derive("Scene")
 
 function S:new( ... )
 end

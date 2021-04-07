@@ -1,7 +1,7 @@
-local class = require("class")
-local C = class:derive("MECircle")
+local Class = require("lib.Class")
+local C = Class:derive("MECircle")
 
-local Point = require("Point")
+local Point = require("lib.Point")
 
 function C:new( c, r, pts )
   pts = pts or {}

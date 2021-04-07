@@ -1,9 +1,9 @@
 
-local Point = require("Point")
-local Vector2 = require("Vector2")
-local AABB = require("AABB")
-local OBB = require("OBB")
-local MECircle = require("MECircle")
+local Point = require("lib.Point")
+local Vector2 = require("lib.Vector2")
+local AABB = require("lib.AABB")
+local OBB = require("lib.OBB")
+local MECircle = require("lib.MECircle")
 
 function createRandomPoints(x, y)
   local max_points = love.math.random(5, 40)

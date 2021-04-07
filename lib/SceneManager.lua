@@ -1,5 +1,4 @@
-local class = require("class")
-
+local Class = require("lib.Class")
 local SM = class:derive("SceneManager")
 
 function SM:new( ... )
