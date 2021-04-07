@@ -5,7 +5,7 @@ function S:new( sceneMgr )
   self.sceneMgr = sceneMgr
 end
 
-function S:enter()
+function S:load()
 end
 
 function S:update( dt )

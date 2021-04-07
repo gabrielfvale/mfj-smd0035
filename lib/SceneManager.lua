@@ -5,6 +5,7 @@ function SM:new( dir, scenes )
   dir = dir or ""
   self.scenes = {}
   self.dir = dir
+  self.currentSceneName = "None"
 
   if scenes ~= nil then
     for i=1, #scenes do
@@ -17,9 +18,20 @@ function SM:new( dir, scenes )
 end
 
 function SM:add( scene )
+  if scene then
+    self.scenes[scene_name] = scene
+  end
 end
 
-function SM:remove( scene )
+function SM:remove( sceneName )
+  if sceneName then
+    for key, value in ipairs(self.scenes) do
+      if key == sceneName then
+        self.scenes[key]:destroy()
+        self.scenes[key] = nil
+      end
+    end
+  end
 end
 
 function SM:switch( nextScene )
@@ -28,7 +40,9 @@ function SM:switch( nextScene )
   end
 
   if nextScene then
+    self.currentSceneName = nextScene
     self.currentScene = self.scenes[nextScene]
+    self.currentScene:load()
   end
 end
 
@@ -42,7 +56,9 @@ function SM:update( dt )
 end
 
 function SM:draw( ... )
+  love.graphics.print("[SCENE] " .. self.currentSceneName)
   if self.currentScene then
+    love.graphics.translate(0, 20)
     self.currentScene:draw( ... )
   end
 end
