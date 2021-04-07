@@ -69,8 +69,8 @@ function C:welzlRecursion( P, R, n )
   -- P is the vector of points
   -- R determines the circle
 
-  local P = { table.unpack(P) }
-  local R = { table.unpack(R) }
+  local P = { unpack(P) }
+  local R = { unpack(R) }
 
   -- base case when #P = 0 or #R = 3
   if n == 0 or #R == 3 then
@@ -95,7 +95,7 @@ function C:welzlRecursion( P, R, n )
 end
 
 function C:welzl( pts )
-  local P = { table.unpack(pts) }
+  local P = { unpack(pts) }
   return self:welzlRecursion( P, {}, #P )
 end
 
