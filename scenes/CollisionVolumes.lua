@@ -20,33 +20,40 @@ function CV:load()
   local aabbDim = 100
   local circleRad = 40
   local offset = 40
+  objectPoints = {}
+
+  -- randomize object locations
+  for i=1,6 do
+    table.insert( objectPoints, love.math.random( 20, screen_width - 20) )
+    table.insert( objectPoints, love.math.random( 20, screen_height - 20) )
+  end
 
   objects = {
-    MECircle(Point(circleRad + offset, circleRad + offset), circleRad),
-    MECircle(Point(4*circleRad + offset, circleRad + offset), circleRad),
+    MECircle(Point(objectPoints[1], objectPoints[2]), circleRad),
+    MECircle(Point(objectPoints[3], objectPoints[4]), circleRad),
     AABB({
-      Point(4*circleRad + 5*offset - aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 5*offset + aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 5*offset + aabbDim/2, 2*offset + aabbDim/2),
-      Point(4*circleRad + 5*offset - aabbDim/2, 2*offset + aabbDim/2)
+      Point(objectPoints[5] - aabbDim/2, objectPoints[6] - aabbDim/2),
+      Point(objectPoints[5] + aabbDim/2, objectPoints[6] - aabbDim/2),
+      Point(objectPoints[5] + aabbDim/2, objectPoints[6] + aabbDim/2),
+      Point(objectPoints[5] - aabbDim/2, objectPoints[6] + aabbDim/2)
     }),
     AABB({
-      Point(4*circleRad + 6*offset + aabbDim - aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 6*offset + aabbDim + aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 6*offset + aabbDim + aabbDim/2, 2*offset + aabbDim/2),
-      Point(4*circleRad + 6*offset + aabbDim - aabbDim/2, 2*offset + aabbDim/2)
+      Point(objectPoints[7] - aabbDim/2, objectPoints[8] - aabbDim/2),
+      Point(objectPoints[7] + aabbDim/2, objectPoints[8] - aabbDim/2),
+      Point(objectPoints[7] + aabbDim/2, objectPoints[8] + aabbDim/2),
+      Point(objectPoints[7] - aabbDim/2, objectPoints[8] + aabbDim/2)
     }),
     OBB(Vector2(1, 0.1), {
-      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim, 2*offset - aabbDim/2),
-      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim, 2*offset - aabbDim/2),
-      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim/2, 2*offset + aabbDim/2),
-      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim/2, 2*offset + aabbDim/2)
+      Point(objectPoints[9] - aabbDim, objectPoints[10] - aabbDim/2),
+      Point(objectPoints[9] + aabbDim, objectPoints[10] - aabbDim/2),
+      Point(objectPoints[9] + aabbDim/2, objectPoints[10] + aabbDim/2),
+      Point(objectPoints[9] - aabbDim/2, objectPoints[10] + aabbDim/2)
     }),
-    OBB(Vector2(1, -0.1), {
-      Point(4*circleRad + 8*offset + 2*aabbDim - aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 8*offset + 2*aabbDim + aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 8*offset + 2*aabbDim + aabbDim/2, 2*offset + aabbDim/2),
-      Point(4*circleRad + 8*offset + 2*aabbDim - aabbDim/2, 2*offset + aabbDim/2)
+    OBB(Vector2(1, 1), {
+      Point(objectPoints[11] - aabbDim/2, objectPoints[12] - aabbDim/2),
+      Point(objectPoints[11] + aabbDim/2, objectPoints[12] - aabbDim/2),
+      Point(objectPoints[11] + aabbDim/2, objectPoints[12] + aabbDim/2),
+      Point(objectPoints[11] - aabbDim/2, objectPoints[12] + aabbDim/2)
     }),
   }
 
@@ -112,18 +119,18 @@ function CV:update( dt )
 end
 
 function CV:draw()
+  for i, o in ipairs(objects) do
+    if hasCollision and objectCollided[i] then
+      o:draw(objectColors[i])
+    else
+      o:draw(objectColors[i], false, "fill")
+    end
+  end
+
   love.graphics.print("Volumes de colisão")
   love.graphics.print("Arraste as formas para movê-las", 0, 20)
   if hasCollision then
     love.graphics.print("Colisão!", 0, 40)
-  end
-
-  for i, o in ipairs(objects) do
-    if hasCollision and objectCollided[i] then
-      o:draw(objectColors[i], false)
-    else
-      o:draw(objectColors[i], false, "fill")
-    end
   end
 end
 
