@@ -54,6 +54,9 @@ function O:new( u, pts )
   local p3 = Point.add(op3[1], op3[2])
   p3 = Point.add(p3, self.c)
 
+  self.hw = obb_width
+  self.hh = obb_height
+
   self.vertices = {
     p0.x, p0.y,
     p1.x, p1.y,
@@ -64,6 +67,13 @@ function O:new( u, pts )
   local x_axis = Vector2(1, 0)
   local adot = self.u:dot(x_axis)
   self.angle = math.acos( adot / (x_axis:mag() * self.u:mag()) )
+  self.rotation = Point(math.cos( self.angle ), math.sin( self.angle ))
+end
+
+function O:isInside( ... )
+end
+
+function O:translate( ... )
 end
 
 function O:draw( color, showText, fillMode )
@@ -77,14 +87,14 @@ function O:draw( color, showText, fillMode )
   if #self.vertices ~= 0 then
     love.graphics.push("all")
     love.graphics.setColor(color[1], color[2], color[3])
-    love.graphics.polygon( "line", self.vertices )
+    love.graphics.polygon( fillMode, self.vertices )
     if showText then
       -- rotate label
       love.graphics.translate(self.vertices[1], self.vertices[2])
       love.graphics.rotate(self.angle)
       love.graphics.print("OBB")
-      love.graphics.pop()
     end
+    love.graphics.pop()
   end
 end
 

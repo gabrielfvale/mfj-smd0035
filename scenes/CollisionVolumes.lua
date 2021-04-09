@@ -18,22 +18,29 @@ function CV:load()
   hasCollision = false
 
   local aabbDim = 100
+  local circleRad = 40
+  local offset = 40
 
   objects = {
-    MECircle(pageOrigin, 40),
-    MECircle(Point(pageOrigin.x + 30, pageOrigin.y), 40),
-    MECircle(Point(pageOrigin.x + 320, pageOrigin.y), 40),
+    MECircle(Point(circleRad + offset, circleRad + offset), circleRad),
+    MECircle(Point(4*circleRad + offset, circleRad + offset), circleRad),
     AABB({
-      Point(pageOrigin.x - aabbDim/2, pageOrigin.y - aabbDim/2),
-      Point(pageOrigin.x + aabbDim/2, pageOrigin.y - aabbDim/2),
-      Point(pageOrigin.x + aabbDim/2, pageOrigin.y + aabbDim/2),
-      Point(pageOrigin.x - aabbDim/2, pageOrigin.y + aabbDim/2)
+      Point(4*circleRad + 5*offset - aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 5*offset + aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 5*offset + aabbDim/2, 2*offset + aabbDim/2),
+      Point(4*circleRad + 5*offset - aabbDim/2, 2*offset + aabbDim/2)
     }),
     AABB({
-      Point(pageOrigin.x + 80 - aabbDim/2, pageOrigin.y - aabbDim/2),
-      Point(pageOrigin.x + 80 + aabbDim/2, pageOrigin.y - aabbDim/2),
-      Point(pageOrigin.x + 80 + aabbDim/2, pageOrigin.y + aabbDim/2),
-      Point(pageOrigin.x + 80 - aabbDim/2, pageOrigin.y + aabbDim/2)
+      Point(4*circleRad + 6*offset + aabbDim - aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 6*offset + aabbDim + aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 6*offset + aabbDim + aabbDim/2, 2*offset + aabbDim/2),
+      Point(4*circleRad + 6*offset + aabbDim - aabbDim/2, 2*offset + aabbDim/2)
+    }),
+    OBB(Vector2(1, 0.1), {
+      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim/2, 2*offset + aabbDim/2),
+      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim/2, 2*offset + aabbDim/2)
     }),
   }
 

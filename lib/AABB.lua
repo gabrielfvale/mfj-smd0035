@@ -22,8 +22,6 @@ function A:new( pts )
 
     self.min = Point(minX, minY)
     self.max = Point(maxX, maxY)
-    local w, h = (maxX - minX), (maxY - minY)
-    self.c = Point(minX + w/2, minY + h/2)
     self:calcVertices()
 
   end
@@ -31,6 +29,8 @@ end
 
 function A:calcVertices()
   local min, max = self.min, self.max
+  local w, h = (max.x - min.x), (max.y - min.y)
+  self.c = Point(min.x + w/2, min.y + h/2)
   self.vertices = {
     min.x, min.y,
     max.x, min.y,
