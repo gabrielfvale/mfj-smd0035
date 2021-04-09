@@ -57,23 +57,69 @@ function O:new( u, pts )
   self.hw = obb_width
   self.hh = obb_height
 
-  self.vertices = {
+  self.coords = {
     p0.x, p0.y,
     p1.x, p1.y,
     p2.x, p2.y,
     p3.x, p3.y,
   }
+  self.vertices = {
+    p0, p1, p2, p3
+  }
 
   local x_axis = Vector2(1, 0)
   local adot = self.u:dot(x_axis)
   self.angle = math.acos( adot / (x_axis:mag() * self.u:mag()) )
-  self.rotation = Point(math.cos( self.angle ), math.sin( self.angle ))
 end
 
-function O:isInside( ... )
+function O:rotatePoint( p0 )
+  local radius = math.sqrt( self.c.x^2 + self.c.y^2 )
+  local currentAngle = math.atan2(p0.y-self.c.y, p0.x-self.c.x)
+  print("angle " .. currentAngle)
+  local newAngle = currentAngle - self.angle
+  local newX = self.c.x + radius*math.cos(newAngle)
+  local newY = self.c.y + radius*math.sin(newAngle)
+
+  return newX, newY
 end
 
-function O:translate( ... )
+function O:isInside( p0 )
+  -- set OBB center as origin
+  local px, py  = p0.x - self.c.x, p0.y - self.c.y
+  -- rotate point
+  local newX = math.cos(-self.angle) * px - math.sin(-self.angle) * py
+  local newY = math.sin(-self.angle) * px + math.cos(-self.angle) * py
+
+  -- translate back
+  newX = newX + self.c.x
+  newY = newY + self.c.y
+
+  local xTest = (newX > self.c.x - self.hw) and (newX < self.c.x + self.hw)
+  local yTest = (newY > self.c.y - self.hh) and (newY < self.c.y + self.hh)
+
+  return xTest and yTest
+end
+
+function O:translate( x, y )
+  local translateMatrix = {
+    1, 0, x,
+    0, 1, y,
+    0, 0, 1
+  }
+  self.c:matrix( translateMatrix )
+  local tVecs = {}
+  local nCoords = {}
+
+  for i=1,#self.vertices do
+    local temp = Point(self.vertices[i].x, self.vertices[i].y)
+    temp:matrix( translateMatrix )
+    tVecs[i] = temp
+    table.insert( nCoords, temp.x )
+    table.insert( nCoords, temp.y )
+  end
+
+  self.vertices = tVecs
+  self.coords = nCoords
 end
 
 function O:draw( color, showText, fillMode )
@@ -87,10 +133,10 @@ function O:draw( color, showText, fillMode )
   if #self.vertices ~= 0 then
     love.graphics.push("all")
     love.graphics.setColor(color[1], color[2], color[3])
-    love.graphics.polygon( fillMode, self.vertices )
+    love.graphics.polygon( fillMode, self.coords )
     if showText then
       -- rotate label
-      love.graphics.translate(self.vertices[1], self.vertices[2])
+      love.graphics.translate(self.coords[1], self.coords[2])
       love.graphics.rotate(self.angle)
       love.graphics.print("OBB")
     end

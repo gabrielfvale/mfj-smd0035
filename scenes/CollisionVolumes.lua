@@ -37,10 +37,16 @@ function CV:load()
       Point(4*circleRad + 6*offset + aabbDim - aabbDim/2, 2*offset + aabbDim/2)
     }),
     OBB(Vector2(1, 0.1), {
-      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim/2, 2*offset - aabbDim/2),
-      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim, 2*offset - aabbDim/2),
+      Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim, 2*offset - aabbDim/2),
       Point(4*circleRad + 7*offset + 2*aabbDim + aabbDim/2, 2*offset + aabbDim/2),
       Point(4*circleRad + 7*offset + 2*aabbDim - aabbDim/2, 2*offset + aabbDim/2)
+    }),
+    OBB(Vector2(1, -0.1), {
+      Point(4*circleRad + 8*offset + 2*aabbDim - aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 8*offset + 2*aabbDim + aabbDim/2, 2*offset - aabbDim/2),
+      Point(4*circleRad + 8*offset + 2*aabbDim + aabbDim/2, 2*offset + aabbDim/2),
+      Point(4*circleRad + 8*offset + 2*aabbDim - aabbDim/2, 2*offset + aabbDim/2)
     }),
   }
 
@@ -54,6 +60,7 @@ function CV:load()
   end
 
   objectPick()
+  -- Collisions.sat( objects[3], objects[4] )
 end
 
 function objectPick()

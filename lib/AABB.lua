@@ -30,13 +30,18 @@ end
 function A:calcVertices()
   local min, max = self.min, self.max
   local w, h = (max.x - min.x), (max.y - min.y)
+  local newVerts = {}
   self.c = Point(min.x + w/2, min.y + h/2)
-  self.vertices = {
+  self.coords = {
     min.x, min.y,
     max.x, min.y,
     max.x, max.y,
     min.x, max.y
   }
+  for i=1,#self.coords,2 do
+    table.insert( newVerts, Point(self.coords[i], self.coords[i+1]) )
+  end
+  self.vertices = newVerts
 end
 
 function A:isInside( p0 )
@@ -68,7 +73,7 @@ function A:draw( color, showText, fillMode )
   if #self.vertices ~= 0 then
     love.graphics.push("all")
     love.graphics.setColor(color[1], color[2], color[3])
-    love.graphics.polygon( fillMode, self.vertices )
+    love.graphics.polygon( fillMode, self.coords )
     if showText then
       love.graphics.print("AABB", self.min.x, self.min.y)
     end

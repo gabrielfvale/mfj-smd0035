@@ -50,7 +50,7 @@ end
 function Collisions:circle_obb( c, o )
   local circleCenter, obbCenter = c.c, o.c
   local radius = c.r
-  local vertices = o.vertices
+  local vertices = o.coords
   local max = -math.huge
 
   local dist = Vector2(circleCenter.x - obbCenter.x, circleCenter.y - obbCenter.y)
@@ -72,6 +72,51 @@ function Collisions:circle_obb( c, o )
   end
 end
 
+function Collisions:sat( a, b )
+  local poly1 = a
+  local poly2 = b
+
+  for i=1,2 do
+    if i == 2 then
+      poly1 = b
+      poly2 = a
+    end
+
+    local p1Verts = poly1.vertices
+    local p2Verts = poly2.vertices
+
+    for i=1,#p1Verts do
+      local ni = i+1
+      if ni > #p1Verts then ni = 1 end
+
+      local edge = Vector2(p1Verts[ni].x - p1Verts[i].x, p1Verts[ni].y - p1Verts[i].y)
+      local norm = edge:normal()
+
+      -- poly1
+      local min_r1, max_r1 = math.huge, -math.huge
+      for p=1,#p1Verts do
+        local q = (p1Verts[p].x * norm.x + p1Verts[p].y * norm.y)
+        min_r1 = math.min( min_r1,q )
+        max_r1 = math.max( max_r1,q )
+      end
+
+      -- poly2
+      local min_r2, max_r2 = math.huge, -math.huge
+      for p=1,#p2Verts do
+        local q = (p2Verts[p].x * norm.x + p2Verts[p].y * norm.y)
+        min_r2 = math.min( min_r2,q )
+        max_r2 = math.max( max_r2,q )
+      end
+
+      if not (max_r2 >= min_r1 and max_r1 >= min_r2) then
+        return false
+      end
+    end
+  end
+
+  return true
+end
+
 function Collisions.check( a, b )
   assert(type(a) == "table", "parameter a must be of Type Class!")
   assert(type(a) == "table", "parameter b must be of Type Class!")
@@ -80,9 +125,11 @@ function Collisions.check( a, b )
   if a:is(Circle) and b:is(Circle) then
     return Collisions:circle_circle( a, b )
   end
-
   if a:is(AABB) and b:is(AABB) then
-    return Collisions:aabb_aabb( a, b )
+    return Collisions:sat( a, b )
+  end
+  if a:is(OBB) and b:is(OBB) then
+    return Collisions:sat( a, b )
   end
 
   -- circle x aabb
@@ -97,6 +144,11 @@ function Collisions.check( a, b )
     return Collisions:circle_obb( a, b )
   elseif a:is(OBB) and b:is(Circle)  then
     return Collisions:circle_obb( b, a )
+  end
+
+  -- aabb x obb
+  if a:is(AABB) and b:is(OBB)  then
+    return Collisions:sat( a, b )
   end
   return false
 end
