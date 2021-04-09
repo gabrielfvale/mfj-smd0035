@@ -65,4 +65,15 @@ function Vec2:copy()
   return Vec2(self.x, self.y)
 end
 
+function Vec2:matrix( matrix )
+  if #matrix ~= 9 then
+    return
+  end
+  local m = matrix
+  local x = self.x
+  local y = self.y
+  self.x = m[1] * x + m[2] * y + m[3] * 1;
+  self.y = m[4] * x + m[5] * y + m[6] * 1;
+end
+
 return Vec2

@@ -7,6 +7,7 @@ local Primitive = require("lib.Primitive")
 local AABB = require("lib.AABB")
 local OBB = require("lib.OBB")
 local MECircle = require("lib.MECircle")
+local Collisions = require("lib.Collisions")
 
 function CV:load()
   local screen_width, screen_height = love.graphics.getDimensions()
@@ -16,17 +17,23 @@ function CV:load()
   currentObject = nil
   hasCollision = false
 
-  local aabbDim = 40
+  local aabbDim = 100
 
   objects = {
     MECircle(pageOrigin, 40),
-    MECircle(Point(pageOrigin.x + 160, pageOrigin.y), 40),
+    MECircle(Point(pageOrigin.x + 30, pageOrigin.y), 40),
     MECircle(Point(pageOrigin.x + 320, pageOrigin.y), 40),
     AABB({
       Point(pageOrigin.x - aabbDim/2, pageOrigin.y - aabbDim/2),
       Point(pageOrigin.x + aabbDim/2, pageOrigin.y - aabbDim/2),
       Point(pageOrigin.x + aabbDim/2, pageOrigin.y + aabbDim/2),
       Point(pageOrigin.x - aabbDim/2, pageOrigin.y + aabbDim/2)
+    }),
+    AABB({
+      Point(pageOrigin.x + 80 - aabbDim/2, pageOrigin.y - aabbDim/2),
+      Point(pageOrigin.x + 80 + aabbDim/2, pageOrigin.y - aabbDim/2),
+      Point(pageOrigin.x + 80 + aabbDim/2, pageOrigin.y + aabbDim/2),
+      Point(pageOrigin.x + 80 - aabbDim/2, pageOrigin.y + aabbDim/2)
     }),
   }
 
@@ -77,7 +84,7 @@ function checkCollisions()
     local object1 = objects[i]
     for j = i + 1, #objects do
       local object2 = objects[j]
-      if object1:collidesWith(object2) then
+      if Collisions.check( object1, object2 ) then
         objectCollided[i] = true
         objectCollided[j] = true
         hasCollision = true
@@ -87,12 +94,16 @@ function checkCollisions()
 end
 
 function CV:update( dt )
-  print(hasCollision)
   checkCollisions()
 end
 
 function CV:draw()
   love.graphics.print("Volumes de colisão")
+  love.graphics.print("Arraste as formas para movê-las", 0, 20)
+  if hasCollision then
+    love.graphics.print("Colisão!", 0, 40)
+  end
+
   for i, o in ipairs(objects) do
     if hasCollision and objectCollided[i] then
       o:draw(objectColors[i], false)

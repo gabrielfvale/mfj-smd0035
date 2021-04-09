@@ -2,6 +2,8 @@ local Primitive = require("lib.Primitive")
 local C = Primitive:derive("MECircle")
 
 local Point = require("lib.Point")
+local Vector2 = require("lib.Vector2")
+local AABB = require("lib.AABB")
 
 function C:new( c, r, pts )
   pts = pts or {}
@@ -27,16 +29,6 @@ function C:translate( x, y )
     0, 0, 1
   }
   self.c:matrix( translateMatrix )
-end
-
-function C:collidesWith( B )
-  if B:is(C) then -- circle x circle
-    local radius = B.r
-    local center = B.c
-    dist = Point.dist(self.c, center)
-    return dist - (self.r + radius) < 0
-  end
-  return false
 end
 
 function C:getCenter( b, c )

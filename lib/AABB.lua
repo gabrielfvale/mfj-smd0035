@@ -22,7 +22,8 @@ function A:new( pts )
 
     self.min = Point(minX, minY)
     self.max = Point(maxX, maxY)
-
+    local w, h = (maxX - minX), (maxY - minY)
+    self.c = Point(minX + w/2, minY + h/2)
     self:calcVertices()
 
   end
@@ -53,6 +54,7 @@ function A:translate( x, y )
   }
   self.min:matrix( translateMatrix )
   self.max:matrix( translateMatrix )
+  self.c:matrix( translateMatrix )
   self:calcVertices()
 end
 
